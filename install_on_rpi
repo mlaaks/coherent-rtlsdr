@@ -1,0 +1,67 @@
+Initial tests on RPI 3 Model B and NanoPi A64 were unsuccessful. The program can be compiled, but synchronization fails due to insufficient CPU-power. Lowering sample rate to 250 kHz had shown limited success. This needs optimization, and there are obvious tweaks that can be done. The computation of cross-correlation has already been disabled for channels which have acquired synchronization, but this feature is untested on the PI. 
+
+For the NanoPi A64: Flash armbian system onto microSD, remember to resize the root partition, otherwise, it's too small (3.1G). I had to delete the partition on the RPI, recreate a larger partition starting from exact same position, then resize it on desktop debian system (fsck is absolutely required, and won't run on mounted system, and then you cannot umount /) via first running fsck -f on the partition, and then run resize2fs. Now it's 15 Gb.
+
+With the restructured software, both RPI 3 Model B and NanoPi A64 work. The ordinary RPI 3B supports cross-correlation via GPU_FFT, but due to USB-host chipset limitations, will not allow more than 8 USB devices simultaneously. Depending on what other hardware present, expect 5-8 signal dongles to function properly. A64 does not have the Videocore GPU, thus with NanoPi A64 the correlation must be performed with FFTW. Currently, the software is unstable on the NanoPi A64. However, in tests, NanoPi A64 successfully synchronized 21 signal dongles. 
+
+*installing the prequisites for coherentsdr
+
+First, cmake is needed for compiling most of the required libraries. This is easy on Armbian with apt-get
+		sudo apt-get install cmake
+		
+Git git
+        sudo apt-get install git
+
+Build tools are likely missing
+         sudo apt-get install build-essential
+
+1. Experimental rtl-sdr fork
+	Get libusb developer libraries (needs root or sudo):
+		apt-get install libusb-1.0-0-dev
+	Download the source:
+		git clone git://github.com/tejeez/rtl-sdr
+		cd rtl-sdr
+		mkdir build
+		cmake .. -DDETACH_KERNEL_DRIVER=ON -DINSTALL_UDEV_RULES=ON
+		make -j 4
+		sudo make install
+		
+		sudo ldconfig
+		sudo udevadm control -R
+		sudo udevadm trigger
+
+2. Compile Vector Optimized Library of Kernels (VOLK) from sources
+	install Mako templates for python
+		apt-get install python-mako
+	install Boost-C++ libraries. note, the available version may vary, for me 1.58 worked. to check, run:  sudo apt-cache search libboost
+		apt-get install libboost1.58-all
+    Python compatibility library six, easiest to install with pip (if needed, following cmake will complain if this is missing)
+        sudo apt-get install python-pip
+        pip install six
+
+	Download the source:
+		git clone git://github.com/gnuradio/volk
+		cd volk
+		mkdir build
+		cd build
+		cmake ..
+		make -j 4
+		sudo make install
+
+3. Install Fastest Fourier Transform in The West (FFTW), easy
+		apt-get install fftw3-dev
+
+4. Install ZMQ libraries
+		apt-get install libzmq3-dev
+		
+5. GNU Readline developer
+        sudo apt-get install libreadline6 libreadline6-dev
+    On Rock Pi 4 debian, this installs the developer libs
+        sudo apt-get install libreadline-dev
+
+6. Coherentrtlsdr (-DRASPBERRYPI replaces FFTW with GPU_FFT)
+    mkdir build
+    cd build
+    cmake .. -DRASPBERRYPI=ON
+    make
+		
