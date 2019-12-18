@@ -1,0 +1,20 @@
+Examples on some of the electronics needed for this project will be added here. 
+All of the schematics are not available in electronic form. Brief descriptions:
+
+example_noisegen:
+	Kicad project for 3+1  output reference noise generator. Drives 3 couplers, 
+	one directionally coupled for reference dongle. Separate power connectors
+	for the MMIC amplifier chain and Zener diode. Optional enable signal for
+	diode current (bypassed in prototype build). Our design switches the noise
+	by disabling the operating voltage on the MMIC amps.
+
+	The output connectors should be changed to MCX, currently they are MMCX.
+
+clock_generator:
+	The clock generator (no complete schematic for this currently), is a buffered 
+	Pierce-type oscillator. Uses 74HC04 and 74HC14 (Schmidt trigger) inverters. See
+	example_clock. The Schmidt trigger (for reducing noise) is not strictly necessary 
+	and could be replaced by 74HC04, or alternatively a single Schmidt trigger followed 
+	by 74HC04 buffers.
+	
+
