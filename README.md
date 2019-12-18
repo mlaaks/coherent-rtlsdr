@@ -17,4 +17,4 @@ Required for compiling:
 	
 +GNU Readline
 
-Requires common 28.8 MHz clock & reference signal (noise) for synchronization.
+Requires common 28.8 MHz clock & reference signal (noise) for synchronization. Some examples in the electronics folder, but this is still missing the coupler module PCB files.
