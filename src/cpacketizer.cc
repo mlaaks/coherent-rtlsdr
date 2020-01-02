@@ -106,10 +106,12 @@ int cpacketize::send(){
     socket->send(packetbuf1.get(),packetlen,0);
     //printf("sending %d phase factors\n",objcount);
     debugsocket->send(pcorrection.data(),objcount*sizeof(std::complex<float>),0);
+    return 0;
 }
 
 int cpacketize::writedebug(uint32_t channeln,std::complex<float> p){
 	pcorrection[channeln] = p;
+    return 0;
 }
 
 //the idea is that each thread could call this method from it's own context, as we're writing to separate locations
@@ -131,6 +133,7 @@ int cpacketize::write(uint32_t channeln,uint32_t readcnt,int8_t *rp){
     //printf("written\n");
 
     //if(writecnt--==0)
+    return 0;
 }
 
 int cpacketize::write(uint32_t channeln,uint32_t readcnt,std::complex<float> *in){
@@ -146,7 +149,7 @@ int cpacketize::write(uint32_t channeln,uint32_t readcnt,std::complex<float> *in
     }
     cdsp::convto8bit((std::complex<int8_t> *) (packetbuf0.get()+loc),in, (blocksize>>1));
     //std::memcpy((int8_t *) (packetbuf0.get() +loc),rp,blocksize);
-    
+    return 0;
 }
 
 int cpacketize::notifysend(){
@@ -158,7 +161,8 @@ int cpacketize::notifysend(){
 	bufferfilled = true;
 	lock.unlock();
 
-	cv.notify_one();	
+	cv.notify_one();
+    return 0;
 } 
 
 

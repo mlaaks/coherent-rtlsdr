@@ -43,7 +43,7 @@ void int_handler(int signal)
 }
 
 //redirect C fprintf(stder,...) to a pipe, suppress stdout output from librtlsdr
-int redir_stderr(bool topipe){
+void redir_stderr(bool topipe){
 	pipe(stderr_pipe);	
 	stderr_f = fdopen(stderr_pipe[0],"r");
 	dup2(stderr_pipe[1],2);
@@ -91,54 +91,55 @@ void usage(void)
 
 int parsecommandline(cl_ops *ops, int argc, char **argv){
 	int opt;
-	while ((opt = getopt(argc, argv, "As:b:f:h:n:g:r:I:RC:q")) != -1) {
+	while ((opt = getopt(argc, argv, "s:b:f:h:n:g:r:I:C:ARq")) != -1) {
 		switch (opt) {
-		case 'A':
-				ops->agc = true;
-			break;
-		case 's':
-				ops->fs=(uint32_t)atof(optarg);
-			break;
-		case 'b':
-				ops->blocksize = (uint32_t)atoi(optarg);
-			break;
-		case 'f':
-				ops->fc=(uint32_t) atof(optarg);
-			break;
-		case 'h':
-				usage();
-			break;
-		case 'n':
-				if ((uint32_t)atoi(optarg)<=ops->ndev)
-					ops->ndev =(uint32_t)atoi(optarg);
-				else
-					cout << "Requested device count higher than devices connected to system " 
-					<< to_string(ops->ndev) << ", setting ndev=" << to_string(ops->ndev) << endl;  
-			break;
-		case 'g':
-				ops->gain = (uint32_t) atoi(optarg)*10;
-			break;
-		case 'r':
-				ops->refgain = (uint32_t) atoi(optarg)*10;
-			break;
-		case 'I':
-				ops->refname=std::string(optarg);
-			break;
-		case 'R':
-				ops->no_header = true;
-			break;
-		case 'C':
+			case 's':
+					ops->fs=(uint32_t)atof(optarg);
+				break;
+			case 'b':
+					ops->blocksize = (uint32_t)atoi(optarg);
+				break;
+			case 'f':
+					ops->fc=(uint32_t) atof(optarg);
+				break;
+			case 'h':
+					usage();
+				break;
+			case 'n':
+					if ((uint32_t)atoi(optarg)<=ops->ndev)
+						ops->ndev =(uint32_t)atoi(optarg);
+					else
+						cout << "Requested device count higher than devices connected to system " 
+						<< to_string(ops->ndev) << ", setting ndev=" << to_string(ops->ndev) << endl;  
+				break;
+			case 'g':
+					ops->gain = (uint32_t) atoi(optarg)*10;
+				break;
+			case 'r':
+					ops->refgain = (uint32_t) atoi(optarg)*10;
+				break;
+			case 'I':
+					ops->refname=std::string(optarg);
+				break;
+			case 'C':
 				ops->config_fname = std::string(optarg);
 				ops->use_cfg = true;
 			break;
-		case 'q':
-				ops->quiet = true;
-			break;
-		default:
-			usage();
-			break;
+			case 'A':
+					ops->agc = true;
+				break;
+			case 'R':
+					ops->no_header = true;
+				break;
+			case 'q':
+					ops->quiet = true;
+				break;
+			default:
+				usage();
+				break;
 		}
 	}
+	return 0;
 };
 
 int main(int argc, char **argv)
@@ -146,11 +147,12 @@ int main(int argc, char **argv)
 
 	int nfft = 8;
 
-	cl_ops   ops = {"M REF",false,2048000,uint32_t(1024e6),8,1<<14,0,500,500,false,"",false,false};
+	cl_ops   ops = {"M REF",false,2048000,uint32_t(1024e6),8,1<<14,4,500,500,false,"",false,false};
 	ops.ndev = crtlsdr::get_device_count();
 	cout << to_string(ops.ndev) << " devices found." << endl;
 	parsecommandline(&ops,argc,argv);
 
+	cout << "ops parsed\n"<< endl;
 	if (ops.no_header)
 		cout << "streaming in raw mode" << endl;
 
@@ -242,7 +244,7 @@ int main(int argc, char **argv)
 		
 		console.start();
 
-		sleep(1);
+		//sleep(1);
 		
 		cout << "starting coherence" <<endl;
 		
@@ -250,6 +252,7 @@ int main(int argc, char **argv)
 		ccoherent coherent(ref_dev,&v_devices, refnoise, nfft);
 		coherent.start();
 		
+		cout << "entering main loop" <<endl;
 		
 		while(!exit_all){
 			cpacketize::send(); //main thread just waits on data and publishes when available.

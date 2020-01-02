@@ -147,6 +147,7 @@ int cconsole::cmdfs(std::string opt){
 		catch (const std::exception& e){
 			cout << "invalid argument: " << e.what() << "("<< opt <<")" << endl;
 		}
+    return 0;
 }
 int cconsole::cmdretune(std::string opt){
 	
@@ -172,6 +173,7 @@ int cconsole::cmdretune(std::string opt){
 		catch (const std::invalid_argument& ia){
 			cout << "invalid argument: " << ia.what() <<"("<< opt <<")"<< endl;
 		}
+    return 0;
 }
 
 int cconsole::cmdlist(std::string opt){
@@ -193,7 +195,7 @@ int cconsole::cmdlist(std::string opt){
 		if (all)
 			cout << devs << capt << endl;
 	}
-					
+	return 0;				
 }
 
 int cconsole::cmddel(std::string opt){
@@ -239,6 +241,8 @@ int cconsole::cmdadd(std::string opt){
 	startbarrier->wait();
 
 	delete startbarrier;
+    
+    return 0;
 }
 int cconsole::cmdrequest(std::string opt){
 
@@ -259,6 +263,8 @@ int cconsole::cmdrequest(std::string opt){
 			d->set_synchronized(false);
 		}
 	}
+	
+	return 0;
 }
 
 int cconsole::cmdphase(std::string opt){
@@ -276,6 +282,7 @@ int cconsole::cmdphase(std::string opt){
 
 	}
 	cout << endl;
+    return 0;
 }
 
 int cconsole::cmdstatus(std::string opt){
@@ -297,6 +304,7 @@ int cconsole::cmdstatus(std::string opt){
 	}
 	cout << endl;
 	//cout << endl;
+    return 0;
 }
 
 int cconsole::parsecmd(std::string inputln){
