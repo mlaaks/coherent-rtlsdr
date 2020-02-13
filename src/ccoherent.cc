@@ -170,14 +170,22 @@ void ccoherent::computelag()
 #endif
 
 	for(int k=1;k<lagqueue.size();k++){
-		float   lag=0.0f;
-		float D=0.0f,a=0.0f,b=0.0f;
+		float    lag=0.0f;
+		float    D=0.0f,a=0.0f,b=0.0f;
 		uint32_t idx = cdsp::indexofmax(smagsqr + k*blocksize,blocksize);
 		//float    mag = smagsqr[k*blocksize+blocksize + idx];// *(smagsqr+k*blocksize+blocksize+lag);
 		
-		float *ptr = (smagsqr + k*blocksize + idx);
-		float mag  = sqrt( *(ptr) / float(blocksize>>1) );  // not quite sure about the scaling. fftw is unnormalized, so ifft(fft(x)) = N*x
+		//edited
+		//complex<float> corr = sifft[k*blocksize +idx];
+		//float argh = std::arg(corr);
+		//cout << to_string(corr.real()) <<"," << to_string(corr.imag()) << endl;
+		//end edited
 
+ //OLD CODE STARTS HERE
+		
+		float *ptr = (smagsqr + k*blocksize + idx);			// this should be taken from sifft() real part.
+		float mag  = sqrt( *(ptr) / float(blocksize>>1) );  // not quite sure about the scaling. fftw is unnormalized, so ifft(fft(x)) = N*x
+		
 		if ((idx>1) && (idx<(blocksize-1))){ //check that n-1 and n+1 won't go off bounds
 			a=-*(ptr-1)-2*(*ptr)+*(ptr+1);
 			b=-0.5f*(*(ptr-1))+0.5f*(*(ptr+1));
@@ -190,11 +198,19 @@ void ccoherent::computelag()
 				cout << "frac zeroed at 1" <<endl;
 			}
 			
-			lag = D + idx;
+			lag = idx; //+D ,disabled fractional sync, obviously it's not doing what it's supposed to do.
 			}
 		else{
 			lag = idx;
 		}
+/*
+		complex<float> *ptrc = (sifft + (k+1)*blocksize/2 + idx);
+		mag = (ptrc[0]*conj(ptrc[0])).real();
+		a = -ptrc[-1].real() - 2.0f*ptrc[0].real() + ptrc[1].real();
+		b = -0.5f*ptrc[-1].real() + 0.5f*ptrc[1].real();
+		D = -(b/a)*(1.0f+M_PI/2);
+		lag = D + idx;
+*/
 
 		lag-=(blocksize >> 1);
 		lagqueue[k]->set_lag(lag,mag);

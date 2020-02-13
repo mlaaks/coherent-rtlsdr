@@ -10,7 +10,7 @@ private:
 	bool enabled;
 	
 public:
-	int set_state(bool s){
+	void set_state(bool s){
 		enabled = s;
 		if (s)
 			fp<<"x"; //enable char

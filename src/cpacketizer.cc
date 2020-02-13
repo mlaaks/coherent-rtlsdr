@@ -57,6 +57,8 @@ void cpacketize::init(std::string address,bool noheader_,uint32_t nchannels_,uin
 }
 
 void cpacketize::cleanup(){
+	socket->close();
+	debugsocket->close();
 	delete context;
 	delete socket;
 

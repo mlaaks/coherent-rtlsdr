@@ -4,3 +4,5 @@ To compile zmqsdr.mexa64:
 
 After it's done, move zmqsdr.mexa64 and CZMQSDR.m to Matlab path to make accessible from other working dirs. If you do not want to do this,
 have these files in the directory where your matlab receive scripts are.
+
+The C++ interface to matlab is too slow. Therefore, do not try zmqsdr.cc...

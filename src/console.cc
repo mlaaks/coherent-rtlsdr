@@ -4,6 +4,7 @@
 #include <readline/history.h>
 #include <iterator>
 #include <zmq.hpp>
+//#include <errno.h>
 
 //extern std::atomic<bool> exit_all;
 
@@ -20,6 +21,7 @@ lqueue<std::string> *commandqueue;
 void localc(){
 
 	rl_bind_key('\t', rl_complete);
+	//rl_getc_function = getc; // CAUTION.
 	char *input;
 
 	while(!exit_console){
@@ -33,6 +35,7 @@ void localc(){
 		//usleep(1000);			//the thread needs to halt here until command is processed and output stops, otherwise prompt is messy...
 		//cout << "pushing input "<< input << endl;
 	}
+	cout << "Local console exiting "<< endl;
 	free(input);
 }
 
@@ -54,6 +57,10 @@ void remotec(std::string address){
 			commandqueue->push(std::string(msg));
 		}
 	}
+	//csocket.unbind(address);
+	csocket.close();
+	//ccontext.close();
+	cout << "Remote console exiting "<< endl;
 }
 
 void monitorc(std::string address){
@@ -423,7 +430,13 @@ void cconsole::consolethreadf(cconsole *ctx)
 		command_processed=true;
 	}
 	//free(input);
-	remote.join();
+	
+	if (local.joinable()) local.join();
+	if (remote.joinable()) remote.join();
+	
 	//monitor.join();
 	delete commandqueue;
+
+	cout << "console thread exiting"<<endl;
+	std::raise(SIGINT); //preferably this should modify exit_all in main.cc
 }

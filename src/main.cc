@@ -225,6 +225,9 @@ int main(int argc, char **argv)
 				v_devices.back()->set_agcmode(ops.agc);
 			}
 			cout.flush();
+			/*if (exit_all){
+				break;
+			}*/
 		}
 		cout << endl;
 		
@@ -259,9 +262,12 @@ int main(int argc, char **argv)
 		}
 
 		cout << "stopping coherent thrd" <<endl;
-		coherent.request_exit();
+		coherent.request_exit(); coherent.join();
 
 		cout << "stopping devices" <<endl;
+
+		ref_dev->stop(); ref_dev->request_exit(); ref_dev->close();
+
 		for (auto d : v_devices){
 			d->stop();
 			d->request_exit();
@@ -276,21 +282,8 @@ int main(int argc, char **argv)
 		for (auto d : v_devices)
 			d->close();
 
-		ref_dev->stop(); ref_dev->request_exit(); ref_dev->close();
-
-		cout << "check if console hangs..." <<endl;
 		console.join();
-		cout << "????"<< endl;
 
-		cout << "check if coherent hangs..." <<endl;
-		coherent.join();
-		cout << "????"<< endl;
-		//read(in[0], buf, sizeof(buf)); //this works!
-		//cout << std::string(buf) << endl;
-		
-		//getline(&lnbuf,&len,f);
-		//cout << std::string(lnbuf) << endl; //now this works!
-		
 		if (ops.quiet){
 			std::cerr.rdbuf( old );
 			close(stderr_pipe[0]);

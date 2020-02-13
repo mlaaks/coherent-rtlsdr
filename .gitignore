@@ -1,0 +1,4 @@
+#ignore build
+build/
+*.mat
+*.out
