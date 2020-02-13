@@ -1,3 +1,11 @@
+%Coherent-RTL-SDR
+%
+%Matlab script for 2D beamforming measurements on a 7 X 3 element URA
+%868 MHz ISM band
+%
+%Receive one frame, save the data for later use, plot the 2D Music
+%pseudo spectrum
+
 clear all;close all;
 
 %set save filename and path prefix

@@ -1,28 +1,41 @@
-clear all;
-close all;
+%Coherent-RTL-SDR
+%
+%Matlab script to validate timing synchronization. 
+%
+%Record a number of frames, plot correlations to reference noise 
+%on channel 0 (=first column of X);
+clear all; close all;
 
 nframes = 10;
 
+%open the device and read samples
 sdr = CZMQSDR('IPAddress','127.0.0.1');
 
 for n=1:nframes
-   [rec(:,:,n),gseq(n),seq(n,:)]=sdr();
-end
-
- Np = size(rec(:,:,1),2);
- Nr = round(Np/4);
-
-%% PLOT:
-for n=1:nframes
-     for k=1:Np
-        subplot(Nr,4,k);
-        c=xcorr(rec(:,1,n),rec(:,k,n));
-        stem(c.*conj(c));
-        xlim([0 (2*size(rec,1)-1)]);
-        abs(max(c))/rms(c);
-        title(num2str(seq(n,k)));
-     end
-     pause(0.01);
+   [X(:,:,n),gseq(n),seq(n,:)]=sdr();
 end
 
 release(sdr);
+
+%% PLOT the cross-correlations:
+% when synchronized, the channel should have a noticeable peak in the
+% center.
+
+Np = size(X(:,:,1),2);
+Nr = round(Np/4);
+
+figure('units','normalized','outerposition',[0 0 1 1]);
+for n=1:nframes
+     for k=1:Np
+        subplot(Nr,4,k);
+        c=xcorr(X(:,1,n),X(:,k,n));
+        stem(c.*conj(c));
+        xlim([0 (2*size(X,1)-1)]);
+        ylim([0 1.5e4]);
+        
+        %PAPR. Crest factor could also be used.
+        PAPR = abs(max(c))^2/rms(c)^2;
+        title(['seq: ' num2str(seq(n,k)) ' PAPR: ' num2str(PAPR)]);
+     end
+     pause(0.01);
+end
