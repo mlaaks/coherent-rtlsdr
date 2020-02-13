@@ -8,9 +8,10 @@ names = {'ref','s0','s1'};
 %ZMQ client for sampledata, a matlab system object:
 sdr = CZMQSDR('IPAddress','127.0.0.1');
  
-% receive one frame and throw it away. This is necessary,
-% otherwise the system object does not initialize properly
-% and will result in crash
+% receive one frame and throw it away. This is currently 
+% necessary, otherwise the system object does not initialize 
+% properly and will result in crash, when enablerefnoise is called
+% before receiving.
 sdr();
 
 %disable reference noise
