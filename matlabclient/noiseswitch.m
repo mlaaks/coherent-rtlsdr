@@ -1,14 +1,22 @@
-clear all;
-close all;
+%Coherent-RTL-SDR
+%
+%Validate the operation of reference noise switching from Matlab
+
+
+clear all;close all;
 names = {'ref','s0','s1'};
 %ZMQ client for sampledata, a matlab system object:
 sdr = CZMQSDR('IPAddress','127.0.0.1');
-pause(1);
-recsmp =[];
+ 
+% receive one frame and throw it away. This is necessary,
+% otherwise the system object does not initialize properly
+% and will result in crash
+sdr();
 
 %disable reference noise
-%sdr.enablerefnoise(false);
+sdr.enablerefnoise(false);
 
+recsmp =[];
 %loop, switch noise on for ~10 frames
 for n=1:100
    if(n==10)
@@ -21,8 +29,9 @@ for n=1:100
    [rec,gseq,seq]=sdr();
    recsmp = [recsmp; rec];   
 end
+release(sdr);
 
-%plot pwr
+%plot pwr w.r.t. time:
 for n=1:3
     subplot(3,1,n);
     plot(recsmp(:,n).*conj(recsmp(:,n)))
@@ -31,5 +40,3 @@ for n=1:3
     xlabel('n [sample index]');
     xlim([0,size(recsmp,1)-1]);
 end
-
-release(sdr);

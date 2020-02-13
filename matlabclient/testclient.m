@@ -1,5 +1,14 @@
-clear all;
-close all;
+%Coherent-RTL-SDR
+%
+%Matlab script used in testing the performance of C vs. C++ MEX interfaces
+%The result showed: C++ interface is hideously slow, and will cripple
+%the receiver when number of channels grows.
+
+%Stick to C MEX when high volumes of data are moved, unless ofcourse, 
+%there is a trick to speed things up considerably in the new matlab
+%C++ API.
+
+clear all;close all;
 
 sdr = CZMQSDR('IPAddress','127.0.0.1');
 %sdr = CZMQSDR('IPAddress','10.10.10.10');

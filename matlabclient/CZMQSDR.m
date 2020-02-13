@@ -1,3 +1,8 @@
+%Coherent-RTL-SDR
+%
+%The CZMQSDR system object. This interfaces to the zmqsdr.c mex
+%implementation.
+
 classdef CZMQSDR < matlab.System
     properties %(Access = private)
       CenterFrequency = 1024e6;

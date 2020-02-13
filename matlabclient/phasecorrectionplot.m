@@ -1,9 +1,13 @@
-clear all; close all;
+%Coherent-RTL-SDR
+%
+%Matlab script for checking the phase correction.
+
 %Read output from the phase correction debug port. needs plain zmq, get:
 %zeromq-matlab 
 %clone https://github.com/smcgill3/zeromq-matlab
 %build ( run make), if succesfuly, copy the resulting zmq.mexa64 to
 %your matlab path.
+clear all; close all;
 
 %set the time to capture data:
 runforminutes=30;

@@ -1,5 +1,11 @@
-clear all;
-close all;
+%Coherent-RTL-SDR
+%
+%Matlab script demonstrating CZMQSDR
+
+%Receive samples, examine spectrum (in realtime if possible, but zmq-
+%buffers can and will stretch if matlab polls the socket too slowly).
+
+clear all;close all;
 
 sdr = CZMQSDR('IPAddress','127.0.0.1');
 FESR = 1e6; % 2048000;
@@ -17,5 +23,5 @@ scope = dsp.SpectrumAnalyzer(...
 
 while(1)
     [x,gseq,seq]=sdr();
-    scope(x(:,2:end)); %ch 1 is reference, exclude it
+    scope(x(:,2:end)); %ch 1 is reference noise, exclude it from f.scope
 end
