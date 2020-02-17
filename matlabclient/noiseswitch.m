@@ -33,10 +33,11 @@ end
 release(sdr);
 
 %plot pwr w.r.t. time:
-for n=1:3
-    subplot(3,1,n);
+M = size(rec,2);
+for n=1:M
+    subplot(M,1,n);
     plot(recsmp(:,n).*conj(recsmp(:,n)))
-    title(names{n});
+    title(['s' num2str(n-1)]);
     ylabel('pwr');
     xlabel('n [sample index]');
     xlim([0,size(recsmp,1)-1]);

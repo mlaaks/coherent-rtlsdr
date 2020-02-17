@@ -7,6 +7,8 @@
 
 clear all;close all;
 
+nframes = 10;
+
 sdr = CZMQSDR('IPAddress','127.0.0.1');
 FESR = 1e6; % 2048000;
 scope = dsp.SpectrumAnalyzer(...
@@ -21,7 +23,10 @@ scope = dsp.SpectrumAnalyzer(...
     'StartFrequency',   -FESR/2, ...
     'StopFrequency',    FESR/2);
 
-while(1)
+for n=1:nframes
     [x,gseq,seq]=sdr();
+    x = x - mean(x);
     scope(x(:,2:end)); %ch 1 is reference noise, exclude it from f.scope
 end
+
+release(sdr);
