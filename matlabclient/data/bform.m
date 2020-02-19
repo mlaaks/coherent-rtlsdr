@@ -15,7 +15,7 @@ for n=1:24
 
     X = X(:,2:end);
 
-    pmusicplot(X,epos,1);  %set DA=1 for direct aug. difference co-array
+    pmusicplot(X,epos,1,1);  %set DA=1 for direct aug. difference co-array
     drawnow;
     %pause(1);
 end

@@ -47,9 +47,9 @@ release(sdr);
 %2d DOA plot
 x = X(:,2:end);
 x = x - mean(x);
-pmusicplot(x,epos,1);
+pmusicplot(x,epos,1,1);
 figure;
-pmusicplot(x,epos,0);
+pmusicplot(x,epos,1,0);
 
 % filename with a running counter, returns a filename&path where
 % the filename is : highest fname + 1
