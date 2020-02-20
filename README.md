@@ -19,4 +19,4 @@ Required for compiling:
 
 Requires common 28.8 MHz clock & reference signal (noise) for synchronization. Some examples in the electronics folder, but this is still missing the coupler module PCB files.
 
-Currently may return a receive matrix where data on some channels are from a previous sample buffer. This seems to happens under heavy CPU load, at least on limited platforms (testing on RockPI 4 with 21 signal channels). This can be noticed by observing discontinuous channel sequence number (readcnt). Occasionally, all channels skip a buffer in unison, i.e. 8192 sample gap in reception. Perhaps I may need to add some buffering to the packetizer singleton. Under construction.
+Currently may return a receive matrix where data on some channels are from a previous sample buffer. This seems to happen under heavy CPU load, at least on limited platforms (testing on RockPI 4 with 21 signal channels). This can be noticed by observing discontinuous channel sequence number (readcnt). Occasionally, all channels skip a buffer in unison, i.e. 8192 sample gap in reception. Perhaps I may need to add some buffering to the packetizer singleton. Under construction.
