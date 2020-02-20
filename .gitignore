@@ -2,3 +2,5 @@
 build/
 *.mat
 *.out
+*.zip
+*.m~

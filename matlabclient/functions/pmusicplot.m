@@ -3,10 +3,11 @@
 %Plot the MUSIC pseudo spectrum.
 % x =  Ns * Nsensor input sample matrix
 % epos = matlab steervec() compatible element position matrix
+% K = number of signals
 % DA = 1, Do direct augmentation (co-array processing)
 
 
-function pmusicplot(x,epos,DA)
+function pmusicplot(x,epos,K,DA)
     miny = -20;
     %sample covariance mtx;
     Ns= size(x,1);
@@ -24,7 +25,7 @@ function pmusicplot(x,epos,DA)
         Ny       = numel(unique(imag(Du)));
     end
     [U,~,~] = svd(R);
-    Un      = U(:,2:end);
+    Un      = U(:,(K+1):end);
 
     alphas = -90:90; betas  = -90:90;
     for alpha=alphas

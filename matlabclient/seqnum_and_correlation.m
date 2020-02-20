@@ -10,7 +10,8 @@ nframes = 10;
 ymax    = 2000;
 
 %open the device and read samples
-sdr = CZMQSDR('IPAddress','127.0.0.1');
+%sdr = CZMQSDR('IPAddress','127.0.0.1');
+sdr = CZMQSDR('IPAddress','130.233.136.90');
 
 for n=1:nframes
    [X(:,:,n),gseq(n),seq(n,:)]=sdr();
