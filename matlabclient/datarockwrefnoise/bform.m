@@ -1,6 +1,11 @@
 %Coherent-RTL-SDR
 
 %Analyze results saved by measurement_script in parent...
+
+%uses Data space to figure units converter from mathworks:
+%https://se.mathworks.com/matlabcentral/fileexchange/10656-data-space-to-figure-units-conversion
+
+
 %addpath(genpath('functions'))
 clear all; close all;
 addpath('../functions');
@@ -46,7 +51,7 @@ mdata4 =[42,43,44,45,46,47,48;
          0*ones(1,7)];     
 
 %Choose dataset and calculate true doas.     
-mdata = mdata3;
+mdata = mdata4;
 
 truedoa = (180/pi)* atan([(mdata(2,:)/100)./mdata(3,:);
                           mdata(4,:)./mdata(3,:)]);
@@ -57,21 +62,21 @@ dx = (0:6)'*0.5;
 dy = (2:-1:0)'*0.5;
 epos=[repmat(dy',1,7);repelem(dx',3)];
 
-b = fir1(128,1/32);
+b = fir1(128,1/16);
 
 
 %number of signals
 K=3;
 %use direct augmentation
-DA=0;
+DA=1;
 
 for nn= 1:length(mdata)
     load(['meas' num2str(mdata(1,nn)) '.mat']);
 
     X = X(:,end:-1:2);
     
-    X = filter(b,1,X);
-    scope(X);
+    X = filter(b,1,X); %limit bandwidth
+    %scope(X);
 
     [P,Nx,Ny] = pmusic(X,epos,K,DA);
     
@@ -81,9 +86,14 @@ for nn= 1:length(mdata)
     
     alphas = -90:90; betas  = -90:90;
     clf;
-    imagesc(alphas,betas,P);
-    annotation('textarrow',[truedoa(1,nn)-1 truedoa(1,nn)]/90 +0.5+0.105,...
-    [truedoa(2,nn)-1 truedoa(2,nn)]/90 + 0.5 +0.128,'String','TRUE','Color','red');
+    imagesc(alphas,betas,10*log10(P)); colorbar;
+    
+    %add the true DOA as annotation
+    xa        = [truedoa(1,nn) truedoa(1,nn)-1];
+    ya        = [truedoa(2,nn) truedoa(2,nn)-1];
+    
+    [xaf,yaf] = ds2nfu(xa,ya); %see link in header.
+    annotation('textarrow',xaf,yaf,'String','TRUE','Color','red');
     
 
    % annotation('textarrow',[0.128 0.128],...
