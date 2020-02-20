@@ -28,10 +28,14 @@ public:
 	static const std::complex<float>* convtofloat(const std::complex<float> *out, const int8_t *s8bit, int n);
 
 	static const std::complex<float>* scalarmul(const std::complex<float> *out,const std::complex<float> *in,const std::complex<float> scalar_in, int n);
+    
+    static const std::complex<float> conj_dotproduct(const std::complex<float> *a,const std::complex<float> *b, int n);
 	//static const std::complex<float>* convtofloat(const float *out, const int8_t *s8bit, int n);
 
 	static const float rms(const float *in, int n);
 	static const float rms(const std::complex<float> *in,int n);
+    
+    static const float PAPR(const std::complex<float> *s,const std::complex<float> *ref, int n);
 
 	static const float crestfactor(const float *in,float peak, int n);
 	static const float crestfactor(const float *in, int n);

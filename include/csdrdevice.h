@@ -26,11 +26,13 @@ struct lagpoint{
 	uint64_t ts;
 	float 	 lag;
 	float 	 mag;
+    float    PAPR;
 	lagpoint()
 	{
 		ts=0;
 		lag=0;
 		mag=0;
+        PAPR=0;
 	}
 };
 
@@ -96,10 +98,13 @@ public:
 	virtual const std::complex<float> *convtofloat() = 0;
 	virtual const std::complex<float> *convtofloat(const std::complex<float>*)=0;
 	virtual void consume() = 0;
+    virtual uint32_t get_readcntbuf()=0;
 	//virtual float findcorrpeak(const fftwf_complex *reffft) = 0;
 
 	std::complex<float> est_phasecorrect(const lv_32fc_t *ref);
 	std::complex<float> get_phasecorrect();
+    
+    float est_PAPR(const lv_32fc_t *ref);
 
 	std::complex<float> *phasecorrect();
 
@@ -186,9 +191,9 @@ class crtlsdr: public csdrdevice{
 
 	int8_t	 		*swapbuffer(uint8_t *b);
 protected:
+    cbuffer         s8bit;  //timestamped & seqnum, N 8-bit buffers
 	static void 	asynch_threadf(crtlsdr *d);
 	barrier			*startbarrier;
-	cbuffer 		s8bit;
 	
 public:
 	static uint32_t get_device_count();
@@ -220,6 +225,11 @@ public:
 	void start(barrier *b);
 	void startcontrol();
 	void stop();
+    
+    uint32_t get_readcntbuf(){
+        return s8bit.get_rcnt();
+    };
+    
 	int8_t *read();
 	void consume(){s8bit.consume();};
 

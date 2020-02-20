@@ -41,6 +41,13 @@ const std::complex<float>* cdsp::convtofloat(const std::complex<float> *out, con
 	return out;
 }*/
 
+const std::complex<float> cdsp::conj_dotproduct(const std::complex<float> *a,const std::complex<float> *b, int n){
+    
+    std::complex<float> c = 0.0f;
+    volk_32fc_x2_conjugate_dot_prod_32fc((lv_32fc_t *) &c,(lv_32fc_t *) a,(lv_32fc_t *) b,n);
+    return c;
+}
+
 const float cdsp::rms(const float *in, int n){
 	float res;
 	volk_32f_x2_dot_prod_32f(&res, in, in,n);
@@ -48,15 +55,19 @@ const float cdsp::rms(const float *in, int n){
 	//volk_32f_x2_dot_prod_32f(float* result, const float* input, const float* taps, unsigned int num_points)
 }
 
-const float cdsp::rms(const std::complex<float> *in, int n){
-	std::complex<float> res;
-	volk_32fc_x2_dot_prod_32fc(&res,in, in, n);
+const float cdsp::rms(const std::complex<float> *s, int n){
+    std::complex<float> res = conj_dotproduct(s,s,n);
 	return sqrt(res.real()/n);
 }
 
 const float cdsp::crestfactor(const float *in,float peak, int n){
 	float r = rms(in,n);
 	return(peak/r);
+}
+
+const float cdsp::PAPR(const std::complex<float> *s,const std::complex<float> *ref, int n){
+    //float r = rms(in,n
+    return 0; //FIXXXX (peak/r)*(peak/r);
 }
 
 const float cdsp::crestfactor(const float *in, int n){

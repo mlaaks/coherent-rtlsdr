@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <iterator>
+#include <cstring> //memset
 #include <queue>
 
 #define USELIBRTLSDRBUFS
@@ -23,8 +24,8 @@ template <typename T> int sgn(T val) {
 class cbuffer{
 public:
     int8_t      **ptr;
-    uint32_t    readcnt;
-    uint64_t     timestamp;
+    uint32_t    *readcnt;
+    uint64_t    *timestamp;
     uint32_t    L;
     uint32_t	N;
 
@@ -33,8 +34,11 @@ public:
 
     cbuffer(uint32_t n, uint32_t l){
     	ptr 	  = new int8_t* [n];
-    	readcnt   = 0;
-    	timestamp = 0;
+    	readcnt   = new uint32_t [n];
+    	timestamp = new uint64_t [n];
+
+
+
         wp = 0;
         rp = 0;
     	N=n;
@@ -42,6 +46,9 @@ public:
 
     	int alignment = volk_get_alignment();
     	for (int i=0;i<N;++i){
+            readcnt[i]=0;
+            timestamp[i]=0;
+
 #ifndef USELIBRTLSDRBUFS
 			ptr[i] = (int8_t *) volk_malloc(sizeof(int8_t)*L,alignment);
 			std::memset(ptr[i],0,sizeof(int8_t)*L);
@@ -57,6 +64,8 @@ public:
 			volk_free(ptr[i]);
 #endif
     	delete[] ptr;
+        delete[] readcnt;
+        delete[] timestamp;
     };
 /*
     void setbufferptr(uint8_t *buffer,uint32_t rcnt)
@@ -85,17 +94,17 @@ public:
 #endif
 	}
 */
- void setbufferptr(uint8_t *buffer,uint32_t rcnt)
-    {
-        timestamp = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+void setbufferptr(uint8_t *buffer,uint32_t rcnt)
+{
+    timestamp[((wp) & (N-1))] = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+    readcnt[((wp) & (N-1))] = rcnt;
 #ifdef USELIBRTLSDRBUFS
-        ptr[((wp) & (N-1))] = (int8_t *) buffer;
+    ptr[((wp) & (N-1))] = (int8_t *) buffer;
 #endif
-        cdsp::convtosigned(buffer, (uint8_t *) ptr[wp++ & (N-1)],L);
-        readcnt=rcnt;
-    };
+    cdsp::convtosigned(buffer, (uint8_t *) ptr[wp++ & (N-1)],L);
+};
 
-    int8_t *getbufferptr(){
+int8_t *getbufferptr(){
 #ifndef USELIBRTLSDRBUFS        
         return ptr[rp & (N-1)];
 #else
@@ -103,17 +112,23 @@ public:
         return ptr[rp & (N-1)] != NULL ? ptr[rp & (N-1)] : ptr[0]; 
 #endif
     }
-    void consume(){
-        rp++;
-    }
 
-    int8_t *getbufferptr(uint32_t rcnt){
+uint32_t get_rcnt(){
+    return readcnt[rp & (N-1)];
+}
+
+void consume(){
+    rp++;
+}
+
+
+int8_t *getbufferptr(uint32_t rcnt){
 #ifndef USELIBRTLSDRBUFS        
         return ptr[rcnt % N];
 #else
         return ptr[rcnt % N] != NULL ? ptr[rcnt % N] : ptr[0];
 #endif
-    }
+}
 };
 
 class barrier

@@ -233,7 +233,7 @@ void ccoherent::threadf(ccoherent *ctx){
 		int8_t *refsptr = ctx->refdev->read();
 		ctx->refdev->convtofloat(); //working
 		ctx->queuelag(ctx->refdev);
-		ctx->refdev->packetize.write(0,ctx->refdev->get_readcnt(),refsptr);
+		ctx->refdev->packetize.write(0,ctx->refdev->get_readcntbuf(),refsptr);
 		ctx->refdev->consume();
 		//ctx->queuelag(ctx->refdev,true);
 
@@ -258,7 +258,7 @@ void ccoherent::threadf(ccoherent *ctx){
 					d->phasecorrect();
 
 					//d->packetize.write(c,d->get_readcnt(),ptr);
-					d->packetize.write(c,d->get_readcnt(),sfloat);
+					d->packetize.write(c,d->get_readcntbuf(),sfloat);
 					d->packetize.writedebug(c,d->get_phasecorrect());
 					c++;
 					d->consume();

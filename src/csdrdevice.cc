@@ -51,6 +51,11 @@ std::complex<float> csdrdevice::est_phasecorrect(const lv_32fc_t *ref){
 	return phasecorr;
 }
 
+float csdrdevice::est_PAPR(const lv_32fc_t *ref){
+
+	
+}
+
 std::complex<float> csdrdevice::get_phasecorrect(){
 	return phasecorr;
 }
