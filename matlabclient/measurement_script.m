@@ -14,6 +14,8 @@ addpath('functions');
 fpath = 'data/';
 fname = 'meas';
 
+%how many frames we save?
+Nframes = 3;
 
 %Matlab steervec() compatible element position matrix:
 dx = (0:6)'*0.5;
@@ -22,7 +24,8 @@ epos=[repmat(dy',1,7);repelem(dx',3)];
     
 
 
-sdr = CZMQSDR('IPAddress','127.0.0.1');
+%sdr = CZMQSDR('IPAddress','127.0.0.1');
+sdr = CZMQSDR('IPAddress','130.233.136.90');
 
 %switch on refnoise, causes phasecoefficients to recalibrate, wait and
 %disable
@@ -35,13 +38,17 @@ sdr = CZMQSDR('IPAddress','127.0.0.1');
 %release(sdr);
 %sdr = CZMQSDR('IPAddress','127.0.0.1');
 
-%receive one frame
-[X,gseq,seq] = sdr();
+%receive frames
+X=[];
+for n=1:Nframes
+    [Xc,gseq(n),seq(n,:)] = sdr();
+    X =[X;Xc];
+end
 
 %save and close
 spth = spath(fpath,fname);
 fprintf('SAVING RECEIVED MATRIX TO FILE: %s \n',spth);
-save(spth,'X');
+save(spth,'X','gseq','seq');
 release(sdr);
 
 %2d DOA plot
