@@ -168,7 +168,7 @@ int8_t* crtlsdr::swapbuffer(uint8_t *b){
 		 		//cdsp::convtosigned(b, s8bit, blocksize);
 		 		//s8bit.readcnt = inc_readcnt();
 		 		//s8bit.timestamp= t_ns.count();
-		 		newdata=true;
+		 		newdata++; //newdata=true;
 		}
 	//}
 	cv.notify_all();
@@ -178,8 +178,8 @@ int8_t* crtlsdr::swapbuffer(uint8_t *b){
 int8_t* crtlsdr::read(){
 	if (streaming){
 		std::unique_lock<std::mutex> lock(mtx);
-		cv.wait(lock, [this]{return (newdata.load());});
-		newdata=false;
+		cv.wait(lock, [this]{return (newdata.load()>0);});
+		newdata--; //false;
 		return s8bit.getbufferptr(); //this has to be inside mutex scope, otherwise swapbuffer may modify reaccnt and we return wrong buffer occasionally.
 	}
 	return s8bit.getbufferptr(); // double return statements, in case streaming is false.

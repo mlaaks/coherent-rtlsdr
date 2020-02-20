@@ -12,7 +12,7 @@ csdrdevice::csdrdevice(uint32_t asyncbufn_, uint32_t blocksize_, uint32_t sample
 	lagrequested = true;
 	lagready =false;
 	synced  = false;
-	newdata = false;
+	newdata = 0; //false;
 	streaming=false;
 	devname = "";
 
@@ -53,7 +53,7 @@ std::complex<float> csdrdevice::est_phasecorrect(const lv_32fc_t *ref){
 
 float csdrdevice::est_PAPR(const lv_32fc_t *ref){
 
-	
+
 }
 
 std::complex<float> csdrdevice::get_phasecorrect(){

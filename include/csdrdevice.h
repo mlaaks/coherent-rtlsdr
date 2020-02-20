@@ -51,7 +51,7 @@ protected:
 	std::mutex					syncmtx;
 	std::condition_variable 	synccv;
 
-	std::atomic<bool> 			newdata;
+	std::atomic<int> 			newdata;
 	std::atomic<bool> 			do_exit;
 
 	std::atomic<bool>			lagrequested;
