@@ -15,6 +15,9 @@ Required for compiling:
 :volk: - vector optimized library of kernels:
 	sudo apt-get install volk
 	
+:librtlsdr: -Tejeez/Keenerds experimental librtlsdr fork:
+	git://github.com/tejeez/rtl-sdr
+	
 +GNU Readline
 
 Requires common 28.8 MHz clock & reference signal (noise) for synchronization. Some examples in the electronics folder, but this is still missing the coupler module PCB files.
