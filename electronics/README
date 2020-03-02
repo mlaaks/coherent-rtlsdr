@@ -20,8 +20,9 @@ clock_generator:
 
 coupler module for 7 receivers:
 	The reference noise is distributed to the receivers via directional coupling.
-	Check the .jpg for the idea: here the top PCB is a D-Link USB hub. Schematics might 
-	be uploaded, once I locate them.
+	Check the .jpg for the idea: here the top PCB is a D-Link USB hub.
+	
+	Published with permission from Tejeez: coupler.zip & adapter.zip contain the plotted gerber files for a 7-element coupler PCB assembly. You will also need a suitable 7-port HUB, some SMD caps & resistors, inductor and MCX & angled BNC connectors. Also, pin header connectors between adapter and coupler boards. A crude BOM and component values will likely be added when schedule permits...
 	 
 	To improve robustness, RF-switch ICs could be used instead of directional coupling 
 	to perform this function. A strong signal from the antennas on the frequency of 
