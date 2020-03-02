@@ -26,7 +26,26 @@ coupler module for 7 receivers:
 	plotted gerber files for a 7-element coupler PCB assembly. You will also need 
 	a suitable 7-port HUB, some SMD caps & resistors, inductor and MCX & angled 
 	BNC connectors. Also, pin header connectors between adapter and coupler boards. 
-	A crude BOM and component values will likely be added when schedule permits...
+	A crude BOM and component values:
+	
+	P1,P3,P5,P7,P9,P11,P13 : MCX STRAIGHT PLUG (Farnell 1831741)
+	P2,P4,P6,P8,P10,P12,P14: ANGLED BNC (Tyco electronics)
+	
+	R1-R8: 51 Ohm, 1206? (need to verify footprint size)
+	C1-C7: 1nF 1206
+	L1:    220 nH (Farnell 2470315: this inductor is too small, 
+		       painful to solder, get one with larger footprint)
+	
+	C8-C9: 22pF, 1nF
+	
+	C11-C18: (caps to chassis GND) are not strictly necessary.
+	
+	P22: 15 X 2 pin header (2.54mm pitch, straight) connects to adapter
+	
+	adapter:
+	C10: 1uF, 0805 (in adapter board, power source filter)
+	15 X 2 pin connector (straight, 2.54mm)
+	micro-USB B connector
 	 
 	To improve robustness, RF-switch ICs could be used instead of directional coupling 
 	to perform this function. A strong signal from the antennas on the frequency of 
