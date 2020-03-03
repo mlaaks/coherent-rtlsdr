@@ -1,5 +1,19 @@
-Examples on some of the electronics needed for this project will be added here. 
-All of the schematics are not available in electronic form. Brief descriptions:
+Examples on some of the electronics needed for this project will be added here.
+All of the schematics are not available in electronic form. 
+
+Atleast the reference noise switching circuit & firmware is still missing. 
+In our setup, this is implemented with the 2$ STM32F103C8T6 (a.k.a "Blue Pill") µC. 
+This was (audaciously) edited from a CDCACM-device example code in libopencm3 examples 
+to respond to a certain character ('X', could be anything and even include more functionality 
+- too busy to do anything more) to control a GPIO pin. That is, the USB-enabled µC maps to 
+a modem device, e.g. /dev/ttyACM0 (add your user to the dialout group for access), which you 
+then send characters to enable/disable a high-side power switch, which drives the noise amps.
+One could also include a udev rule to command your host computer to not treat it as a modem, but
+it works fine without it after the initial AT-command garbage stops. Our setup also includes an 
+indicator led (+a driver circuit) to observe the reference noise state.
+
+
+Brief descriptions:
 
 example_noisegen:
 	Kicad project for 3+1  output reference noise generator. Drives 3 couplers, 
