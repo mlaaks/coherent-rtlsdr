@@ -1,7 +1,7 @@
 Examples on some of the electronics needed for this project will be added here.
 All of the schematics are not available in electronic form. 
 
-Atleast the reference noise switching circuit & firmware is still missing. 
+At least the reference noise switching circuit & firmware is still missing. 
 In our setup, this is implemented with the 2$ STM32F103C8T6 (a.k.a "Blue Pill") µC. 
 This was (audaciously) edited from a CDCACM-device example code in libopencm3 examples 
 to respond to a certain character ('X', could be anything and even include more functionality 
