@@ -23,6 +23,9 @@ example_noisegen:
 	by disabling the operating voltage on the MMIC amps.
 
 	The output connectors should be changed to MCX, currently they are MMCX.
+	Also, an updated PCB version for 8 outputs with 'almost proper' Wilkinson power dividers
+	is half done, but still somewhat unfinished for being uploaded here (as if anything
+	here is finished/mature). Currently, I'm burdened with writing articles.
 
 clock_generator:
 	The clock generator (no complete schematic for this currently), is a buffered 
