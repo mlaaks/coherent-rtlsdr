@@ -28,5 +28,5 @@ UPDATE 2.2.2021: We have concentrated on experiments with the receiver and prese
 
 Please cite this as: Laakso , M , Rajamäki , R , Wichman , R & Koivunen , V 2020 , Phase-coherent multichannel SDR - Sparse array beamforming . in 28th European Signal Processing Conference, EUSIPCO 2020 - Proceedings . , 9287664 , European Signal Processing Conference , EURASIP , pp. 1856-1860 , European Signal Processing Conference , Amsterdam , Netherlands , 24/08/2020 . https://doi.org/10.23919/Eusipco47968.2020.9287664
 
-The next paper, where we utilize neural networks on data captured with coherent-rtlsdr to do near-field localization will be presented at VTC2021 Helsinki.
+The next paper, in which we utilize deep neural networks on data captured with coherent-rtlsdr to do near-field localization (with surprisingly accurate results), will be presented at VTC2021 Helsinki.
 
