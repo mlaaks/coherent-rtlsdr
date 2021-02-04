@@ -30,3 +30,5 @@ Please cite this as: Laakso , M , Rajamäki , R , Wichman , R & Koivunen , V 202
 
 The next paper, in which we utilize deep neural networks on data captured with coherent-rtlsdr to do near-field localization (with surprisingly accurate results), will be presented at VTC2021 Helsinki.
 
+Added the reference noise controller firmware, shamelessly edited from libopencm3 examples. This uses the 2$ STM32F103C8T6 (a.k.a bluepill) board to control 2 GPIOS for switching operating voltage for the noise amplifiers & case fan (yes, last summer I had problems with the amplifiers overheating while taking measurements during a sunny day). DFU upgradeable with dfu-util once flashed (hack, but works).
+
