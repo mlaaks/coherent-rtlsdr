@@ -1,3 +1,9 @@
+***10.8.2022 PROJECT DEVELOPEMENT HALTED, WE'LL NEED TO FIND SOMEONE TO CONTINUE THE WORK WITH OUR RECEIVER PROTO.
+
+Perhaps this should be someday converted into a GNU Radio OOT module as a signal source, but I do not have the time
+until I finish my PhD.
+***
+
 # coherent-rtlsdr, reworked synchronization algorithm
 
 Mostly the same requirements as in my previous coherentsdr proof-of-concept. One added dependency, GNU Readline, for the shell. Some unworking features: adding and deleting receivers during runtime, application does not always exit cleanly. 
@@ -28,7 +34,9 @@ UPDATE 2.2.2021: We have concentrated on experiments with the receiver and prese
 
 Please cite this as: Laakso , M , Rajamäki , R , Wichman , R & Koivunen , V 2020 , Phase-coherent multichannel SDR - Sparse array beamforming . in 28th European Signal Processing Conference, EUSIPCO 2020 - Proceedings . , 9287664 , European Signal Processing Conference , EURASIP , pp. 1856-1860 , European Signal Processing Conference , Amsterdam , Netherlands , 24/08/2020 . https://doi.org/10.23919/Eusipco47968.2020.9287664
 
-The next paper, in which we utilize deep neural networks on data captured with coherent-rtlsdr to do near-field localization (with surprisingly accurate results), will be presented at VTC2021 Helsinki.
+The next paper, in which we utilize deep neural networks on data captured with coherent-rtlsdr to do near-field localization (with surprisingly accurate results), was presented at VTC2021 Helsinki. The article is titled "Near-field localization using machine learning: An empirical study" and it can be accessed at: https://aaltodoc.aalto.fi/handle/123456789/102361
+
+Please cite as: Laakso , M & Wichman , R 2021 , Near-field localization using machine learning: An empirical study . in 2021 IEEE 93rd Vehicular Technology Conference, VTC 2021-Spring - Proceedings . , 9449002 , IEEE Vehicular Technology Conference , vol. 2021-April 
 
 Added the reference noise controller firmware, shamelessly edited from libopencm3 examples. This uses the 2$ STM32F103C8T6 (a.k.a bluepill) board to control 2 GPIOS for switching operating voltage for the noise amplifiers & case fan (yes, last summer I had problems with the amplifiers overheating while taking measurements during a sunny day). DFU upgradeable with dfu-util once flashed (hack, but works).
 
