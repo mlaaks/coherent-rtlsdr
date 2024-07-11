@@ -1,3 +1,8 @@
+# project development starting again, already in june,
+Changes are being made and the ThorSDR code seems quite stable at the moment.
+Also, we are considering to add soapysdr support in the future
+
+
 ***10.8.2022 PROJECT DEVELOPEMENT HALTED, WE'LL NEED TO FIND SOMEONE TO CONTINUE THE WORK WITH OUR RECEIVER PROTO.
 
 Perhaps this should be someday converted into a GNU Radio OOT module as a signal source, but I do not have the time
