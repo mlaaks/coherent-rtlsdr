@@ -1,3 +1,7 @@
+# things have moved forward, KrakenSDR is now fully controllable by the new (unpublished) ThorSDR code.
+Licencing may change to the MIT license, but this is still under consideration,
+
+
 # project development starting again, already in june,
 Changes are being made and the ThorSDR code seems quite stable at the moment.
 Also, we are considering to add soapysdr support in the future. Note that
