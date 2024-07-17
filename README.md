@@ -1,6 +1,7 @@
 # project development starting again, already in june,
 Changes are being made and the ThorSDR code seems quite stable at the moment.
-Also, we are considering to add soapysdr support in the future
+Also, we are considering to add soapysdr support in the future. Note that
+this driver will also support other reference noise switching calibration systems. e.g. KrakenSDR
 
 
 ***10.8.2022 PROJECT DEVELOPEMENT HALTED, WE'LL NEED TO FIND SOMEONE TO CONTINUE THE WORK WITH OUR RECEIVER PROTO.
