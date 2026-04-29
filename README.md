@@ -1,7 +1,8 @@
 # things have moved forward, KrakenSDR is now fully controllable by the new AegirSDR code.
-Licencing may change to the MIT license, but this is still under consideration. The code
+Licencing is changed to the MIT license. The code
 can be found here: https://github.com/mlaaks/AegirSDR
 
+To use it with the KrakenSDR, simply give the option -K, i.e.: ./Aegirsdr -K
 
 # project development starting again, already in june,
 Changes are being made and the ThorSDR code seems quite stable at the moment.
